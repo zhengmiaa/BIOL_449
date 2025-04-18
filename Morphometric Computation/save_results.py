@@ -5,7 +5,7 @@ def save_results(mouse_id: str, sex: str, genotype: str, age: str,
                 pixel_to_micrometer, physical_width, physical_height,
                 side_stats: dict, sub_geometry: dict):
     """
-    results are saved in 34 CSV files
+    results are saved in 4 CSV files
     1. summary_stats.csv - include sides (proximal, distal) and global stat
     2. distribution_data.csv - the area distribution for each plaque and each neuron
     3. geometry_metadata.csv - data about the subiculum
