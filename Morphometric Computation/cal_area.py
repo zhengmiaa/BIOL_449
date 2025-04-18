@@ -116,7 +116,7 @@ def analyze_mask(cell_npy_path, ab_npy_path, pixel_to_micrometer, age, sub_midpo
     left_overlap = np.sum([is_left(x, y, sub_midpoint, perpendicular_vector) for x, y in zip(x_coords, y_coords)])
     right_overlap = overlap_pixels - left_overlap
     
-    # 转换为实际面积
+    # convert to actual area in um
     left_overlap *= (pixel_to_micrometer**2)
     right_overlap *= (pixel_to_micrometer**2)
 
@@ -168,87 +168,3 @@ def analyze_mask(cell_npy_path, ab_npy_path, pixel_to_micrometer, age, sub_midpo
             'intra_plaque': intra_overlap_area_um2
         }
     }
-
-    # # Calculate total area in pixels
-    # cell_mask_area_pixels = np.count_nonzero(cell_masks)
-    # ab_mask_area_pixels = np.count_nonzero(ab_masks)
-
-    # # Normalize to micrometers
-    # cell_mask_area_um2 = cell_mask_area_pixels * (pixel_to_micrometer ** 2)
-    # print(f"Total cell mask area: {cell_mask_area_um2:.2f} μm²")
-    # ab_mask_area_um2 = ab_mask_area_pixels * (pixel_to_micrometer ** 2)
-    # print(f"Total ab mask area: {ab_mask_area_um2:.2f} μm²")
-
-    # # Get unique mask values excluding zero
-    # unique_cell_masks = np.unique(cell_masks)
-    # unique_ab_masks = np.unique(ab_masks)
-
-    # cell_mask_area_dist_um2 = []
-    # ab_mask_area_dist_um2 = []
-
-    # # Calculate individual mask areas in micrometers²
-    # for mask_value in unique_cell_masks:
-    #     if mask_value != 0:
-    #         area_pixels = np.count_nonzero(cell_masks == mask_value)
-    #         area_um2 = area_pixels * (pixel_to_micrometer ** 2)
-    #         cell_mask_area_dist_um2.append(area_um2)
-
-    # for mask_value in unique_ab_masks:
-    #     if mask_value != 0:
-    #         area_pixels = np.count_nonzero(ab_masks == mask_value)
-    #         area_um2 = area_pixels * (pixel_to_micrometer ** 2)
-    #         ab_mask_area_dist_um2.append(area_um2)
-
-    # # Print results
-
-    
-
-    # return (
-    #     cell_mask_area_um2, 
-    #     len(cell_mask_area_dist_um2), 
-    #     cell_mask_area_dist_um2, 
-    #     ab_mask_area_um2, 
-    #     len(ab_mask_area_dist_um2), 
-    #     ab_mask_area_dist_um2,
-    #     intra_overlap_area_um2
-    # )
-
-
-
-# # Main function
-# if __name__ == "__main__":
-#     # Get image paths from user input
-#     cell_npy_path = input("Please enter the path to your CELL BODY segmentation mask image file (e.g., C:/path/to/image_seg.npy): ")
-#     ab_npy_path = input("Please enter the path to your AMYLOID BETA segmentation mask image file (e.g., C:/path/to/image_seg.npy): ")
-#     image_path_sub = input("Please enter the path to your subiculum mask image file (e.g., C:/path/to/image.tif): ")
-
-#     # Check if files exist
-#     if not (os.path.isfile(cell_npy_path) and os.path.isfile(ab_npy_path) and os.path.isfile(image_path_sub)):
-#         print("Error: One or more specified files do not exist. Please check the paths and try again.")
-#         exit(1)
-
-#     # Get physical and pixel dimensions
-#     try:
-#         physical_width = float(input("Enter the physical width of the image in micrometers (e.g., 1286.15): "))
-#         # physical_height = float(input("Enter the physical height of the image in micrometers (e.g., 810.14): "))
-#         pixel_width = int(input("Enter the pixel width of the image (e.g., 7487): "))
-#         # pixel_height = int(input("Enter the pixel height of the image (e.g., 4716): "))
-#     except ValueError:
-#         print("Error: Please enter valid numerical values for dimensions.")
-#         exit(1)
-
-#     # Calculate pixel-to-micrometer conversion factor
-#     pixel_to_micrometer = physical_width / pixel_width  # Assumes square pixels
-#     print(f"Calculated pixel size: {pixel_to_micrometer:.5f} μm/pixel")
-
-#     # Calculate the total area of the masks
-#     cell_mask_area, unique_cell_masks, cell_mask_area_dist, ab_mask_area, unique_ab_masks, ab_mask_area_dist = analyze_mask(
-#         cell_npy_path, ab_npy_path, pixel_to_micrometer
-#     )
-#     sub_area = analyze_mask_sub(image_path_sub, pixel_to_micrometer)   # Assuming `analyze_mask_sub` handles its own scaling
-
-#     # Save results
-#     save_results(
-#         cell_mask_area, unique_cell_masks, cell_mask_area_dist,
-#         ab_mask_area, unique_ab_masks, ab_mask_area_dist, sub_area
-#     )

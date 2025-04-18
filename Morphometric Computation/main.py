@@ -1,6 +1,5 @@
 import os
 from cal_area import analyze_mask
-from cal_distance import cal_center, cal_min_distances
 from analyze_SUB import analyze_mask_sub
 from save_results import save_results
 
@@ -83,10 +82,6 @@ if __name__ == "__main__":
         cell_npy_path, ab_npy_path, pixel_to_micrometer, age, 
         sub_result["midline"]["midpoint_um"], sub_result["dividing_line"]["direction_vector"]
     )
-
-    # cell_centers = cal_center(cell_npy_path, pixel_to_micrometer)
-    # ab_centers = cal_center(ab_npy_path, pixel_to_micrometer)
-    # min_distances = cal_min_distances(cell_centers, ab_centers, pixel_to_micrometer)
 
     mouse_id = input("Enter Mouse ID: ")
     sex_choice = input("Choose Sex (1. Female, 2.Male): ")

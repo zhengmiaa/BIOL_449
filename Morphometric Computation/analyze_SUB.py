@@ -57,7 +57,7 @@ def calculate_perpendicular_line(
         'is_horizontal': False
     }
     
-    # 处理原始线为垂直线的情况
+    # case that original line is vertical (should not be!)
     if connect_line['is_vertical']:
         return {
             **base_result,
@@ -67,7 +67,7 @@ def calculate_perpendicular_line(
             'direction_vector': (1.0, 0.0)
         }
     
-    # 处理原始线为水平线的情况
+    # case that the original line is horizontal (unlikely)
     if connect_line['is_horizontal']:
         return {
             **base_result,
@@ -100,9 +100,7 @@ def analyze_mask_sub(
     right_sub_end: Tuple[float, float]
 ) -> Dict:
     """
-    分析subiculum图像并返回结构化数据
-    
-    返回格式：
+    return data structure
     {
         "geometry": {
             "area_um2": ...,
@@ -130,7 +128,7 @@ def analyze_mask_sub(
         }
     }
     """
-    # 加载并处理图像
+    # load image
     with Image.open(image_path_sub) as img:
         img_array = np.array(img)
     
@@ -140,7 +138,7 @@ def analyze_mask_sub(
     if white_coords.size == 0:
         raise ValueError("No white region found in the image")
     
-    # 计算几何参数
+    # calculate the geometry
     min_row, min_col = white_coords.min(axis=0)
     max_row, max_col = white_coords.max(axis=0)
     
@@ -156,10 +154,10 @@ def analyze_mask_sub(
         }
     }
     
-    # 计算中线参数 in um!!
+    # cal midline (connecting two ends) in um!!
     connect_line = calculate_end_connecting_line(left_sub_end, right_sub_end, pixel_to_micrometer)
     
-    # 计算分界线参数
+    # cal dividing line
     perpendicular_line = calculate_perpendicular_line(connect_line)
 
     return {
@@ -167,19 +165,4 @@ def analyze_mask_sub(
         "midline": connect_line,
         "dividing_line": perpendicular_line
     }
-# # Main function
-# if __name__ == "__main__":
-#     image_path_sub = input("Please enter the path to your subiculum mask image file (e.g., C:/path/to/image.tif): ").strip('"')
-#     try:
-#         physical_width = float(input("Enter the physical width of the image in micrometers (e.g., 1286.15): "))
-#         physical_height = float(input("Enter the physical height of the image in micrometers (e.g., 810.14): "))
-#         pixel_width = int(input("Enter the pixel width of the image (e.g., 7487): "))
-#     except ValueError:
-#         print("Error: Please enter valid numerical values for dimensions.")
-#         exit(1)
-
-#     # Calculate pixel-to-micrometer conversion factor
-#     pixel_to_micrometer = physical_width / pixel_width  # Assumes square pixels   
-#     sub_area_um2, sub_width_um, sub_height_um, sub_center_um = analyze_mask_sub(image_path_sub, pixel_to_micrometer)  # Assuming `analyze_mask_sub` handles its own scaling
-#     print(sub_area_um2, sub_width_um, sub_height_um, sub_center_um)
 
